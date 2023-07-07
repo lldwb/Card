@@ -1,5 +1,6 @@
-package edu.nf.bookCard.entity;
+package edu.nf.card.entity;
 
+import lombok.Data;
 import org.nf.db.util.Column;
 
 import java.math.BigDecimal;
@@ -9,6 +10,7 @@ import java.time.LocalDateTime;
  * @author 安然的尾巴
  * @version 1.0
  */
+@Data
 public class BookCard {
     @Column("cid")
     private Integer cid;
@@ -20,44 +22,4 @@ public class BookCard {
     private LocalDateTime createDate;
     @Column("deposit")
     private BigDecimal deposit;
-
-    public Integer getCid() {
-        return cid;
-    }
-
-    public void setCid(Integer cid) {
-        this.cid = cid;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSex() {
-        return sex;
-    }
-
-    public void setSex(String sex) {
-        this.sex = sex;
-    }
-
-    public LocalDateTime getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(LocalDateTime createDate) {
-        this.createDate = createDate;
-    }
-
-    public BigDecimal getDeposit() {
-        return deposit;
-    }
-
-    public void setDeposit(BigDecimal deposit) {
-        this.deposit = deposit;
-    }
 }

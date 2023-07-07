@@ -1,13 +1,9 @@
-package edu.nf.bookCard.dao;
+package edu.nf.card.dao;
 
-import edu.nf.bookCard.entity.BookCard;
+import edu.nf.card.entity.BookCard;
 
 import java.util.List;
 
-/**
- * @author 安然的尾巴
- * @version 1.0
- */
 public interface BookCardDao {
     /**
      * 添加借书卡

@@ -1,13 +1,10 @@
-package edu.nf.bookCard.controller;
+package edu.nf.card.controller;
 
 import org.nf.web.annotation.ExceptionHandler;
 import org.nf.web.servlet.view.JsonView;
 
 /**
  * 异常处理
- *
- * @author 安然的尾巴
- * @version 1.0
  */
 public class ExceptionHandlerS extends BaseController{
     // 全局异常处理

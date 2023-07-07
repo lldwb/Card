@@ -9,191 +9,120 @@
 		<!-- 引入组件库 -->
 		<script src="https://unpkg.com/element-ui/lib/index.js"></script>
 		<meta charset="UTF-8">
-		<title>Title</title>
+		<title>借书卡管理系统</title>
 	</head>
 	<body>
 		<div id="vue">
-			<!-- <div>
-       模糊查询：
-       <el-input v-model="name" placeholder="请输入内容"></el-input>
-       <el-button @click="select()">查询</el-button>
-   </div> -->
 			<template>
-				<el-table :data="bookcardInfos" style="width: 100%">
-					<el-table-column prop="cid" label="cid" width="180">
+				<el-table :data="bookCards" style="width: 100%">
+					<el-table-column prop="cid" label="卡号" width="180">
 					</el-table-column>
-					<el-table-column prop="name" label="name" width="180">
+					<el-table-column prop="name" label="姓名" width="180">
 					</el-table-column>
-					<el-table-column prop="sex" label="sex" width="180">
+					<el-table-column prop="sex" label="性别" width="180">
 					</el-table-column>
-					<el-table-column prop="ccreateDate" label="ccreateDate" width="180">
-					</el-table-column>
-					<el-table-column prop="deposit" label="deposit" width="180">
-					</el-table-column>
-					<el-table-column label="操作">
+					<el-table-column prop="ccreateDate" label="办卡日期" width="180">
 						<template slot-scope="scope">
-							<el-button type="text" @click="updBookcardInfoFormVisible(scope.row)">修改</el-button>
-							<el-button @click="delBookcardInfo(scope.row.cid)">删除</el-button>
+							{{scope.row.createDate.date.year}}-{{scope.row.createDate.date.month}}-{{scope.row.createDate.date.day}}
 						</template>
 					</el-table-column>
+					<el-table-column prop="deposit" label="押金" width="180">
+					</el-table-column>
 				</el-table>
-				<!-- <div>
-            <el-pagination
-                    background
-                    :current-page.sync=page
-                    layout="prev, pager, next"
-                    :total="count" @current-change="handleCurrentChange">
-            </el-pagination>
-        </div> -->
 			</template>
 
-			<el-button type="text" @click="addBookcardInfoFormVisible()">添加</el-button>
+			<el-button type="text" @click="addbookCardFormVisible()">新增借书卡</el-button>
 
-			<el-dialog title="添加" :visible.sync="addDialogFormVisible">
-				<el-form ref="form" :model="bookcardInfo" label-width="80px">
+			<el-dialog title="借书卡信息登记" :visible.sync="addDialogFormVisible">
+				<el-form ref="form" :model="bookCard" label-width="80px">
 					<el-form-item label="name" disabled="true">
-						<el-input v-model="bookcardInfo.name"></el-input>
+						<el-input v-model="bookCard.name"></el-input>
 					</el-form-item>
 					<el-form-item label="sex">
-						<el-input v-model="bookcardInfo.sex"></el-input>
+						<template>
+							<el-radio v-model="bookCard.sex" label="男">男</el-radio>
+							<el-radio v-model="bookCard.sex" label="女">女</el-radio>
+						</template>
 					</el-form-item>
 					<el-form-item label="createDate">
-						<el-input v-model="bookcardInfo.createDate"></el-input>
+						<el-date-picker v-model="bookCard.createDate" type="date" placeholder="选择日期"
+							value-format="yyyy-MM-dd'T'HH:mm">
+						</el-date-picker>
 					</el-form-item>
 					<el-form-item label="deposit">
-						<el-input v-model="bookcardInfo.deposit"></el-input>
+						<template>
+							<el-select v-model="bookCard.deposit" placeholder="请选择">
+								<el-option v-for="item in deposits" :key="item.value" :label="item.label"
+									:value="item.value">
+								</el-option>
+							</el-select>
+						</template>
 					</el-form-item>
 				</el-form>
-				<el-button type="text" @click="addBookcardInfo()">确认</el-button>
-			</el-dialog>
-
-			<el-dialog title="修改" :visible.sync="updDialogFormVisible">
-				<el-form ref="form" :model="bookcardInfo" label-width="80px">
-					<el-form-item label="name" disabled="true">
-						<el-input v-model="bookcardInfo.name"></el-input>
-					</el-form-item>
-					<el-form-item label="sex">
-						<el-input v-model="bookcardInfo.sex"></el-input>
-					</el-form-item>
-					<el-form-item label="createDate">
-						<el-input v-model="bookcardInfo.createDate"></el-input>
-					</el-form-item>
-					<el-form-item label="deposit">
-						<el-input v-model="bookcardInfo.deposit"></el-input>
-					</el-form-item>
-				</el-form>
-				<el-button type="text" @click="updateCityInfo()">确认</el-button>
+				<el-button @click="unadd()">取 消</el-button>
+				<el-button type="primary" @click="addbookCard()">确 定</el-button>
 			</el-dialog>
 		</div>
 	</body>
 	<script type="text/javascript">
 		// 查询事件
 		const selectCity = vueRouter => {
-			if (vueRouter.name == "") {
-				$.ajax({
-					url: "/bookcardInfo/get",
-					dataType: "JSON",
-					success(result) {
-						vueRouter.bookcardInfos = result.data
-					}
-				})
-			} else {
-				// $.ajax({
-				//     url: "selectCityInfoFuzzy",
-				//     dataType: "JSON",
-				//     data: {
-				//         page: vueRouter.page,
-				//         length: vueRouter.length,
-				//         name: vueRouter.name
-				//     },
-				//     success(result) {
-				//         vueRouter.city = result.data
-				//         vueRouter.count = result.count
-				//     }
-				// })
-			}
+			$.ajax({
+				url: "/getAllCards",
+				dataType: "JSON",
+				success(result) {
+					vueRouter.bookCards = result.data
+				}
+			})
 		}
 		const vue = new Vue({
 			el: "#vue",
 			data: {
-				// // 页数
-				// page: 1,
-				// // 显示数量
-				// length: 10,
-				// // 总数量
-				// count: 0,
-				name: "",
-				bookcardInfos: [],
+				bookCards: [],
 				addDialogFormVisible: false,
-				updDialogFormVisible: false,
-				bookcardInfo: {
-					cid:"",
+				bookCard: {
+					cid: "",
 					name: "",
 					sex: "",
 					createDate: "",
 					deposit: ""
-				}
+				},
+				deposits: [{
+					value: '100',
+					label: '100'
+				}, {
+					value: '300',
+					label: '300'
+				}, {
+					value: '500',
+					label: '500'
+				}]
 			},
 			methods: {
-				// 翻页
-				handleCurrentChange() {
-					selectCity(this);
-				},
 				// 查询
 				select() {
 					selectCity(this);
 				},
-				// 删除
-				delBookcardInfo(cityId) {
-					$.ajax({
-						url: "/bookcardInfo/del",
-						data: {
-							cid: cityId
-						},
-						success() {
-							selectCity(vue);
-						}
-					})
-				},
-				// 修改
-				updBookcardInfoFormVisible(cityInfo) {
-					this.updDialogFormVisible = true;
-					this.bookcardInfo = cityInfo;
-					console.log(cityInfo);
-				},
-				// 修改
-				updBookcardInfo(cityInfo) {
-					$.ajax({
-						url: "/bookcardInfo/upd",
-						data: {
-							cid: vue.bookcardInfo.cid,
-							name: vue.bookcardInfo.name,
-							sex: vue.bookcardInfo.sex,
-							createDate: vue.bookcardInfo.createDate,
-							deposit: vue.bookcardInfo.deposit
-						},
-						success(result) {
-							selectCity(vue);
-							this.updDialogFormVisible = true;
-						}
-					})
-				},
 				// 添加
-				addBookcardInfoFormVisible() {
+				addbookCardFormVisible() {
+					vue.bookCard.sex = "男";
 					this.addDialogFormVisible = true;
 				},
-				addBookcardInfo() {
+				unadd() {
+					vue.addDialogFormVisible = false;
+				},
+				addbookCard() {
 					$.ajax({
-						url: "/bookcardInfo/add",
+						url: "/addBookCard",
 						data: {
-							name: vue.bookcardInfo.name,
-							sex: vue.bookcardInfo.sex,
-							createDate: vue.bookcardInfo.createDate,
-							deposit: vue.bookcardInfo.deposit
+							name: vue.bookCard.name,
+							sex: vue.bookCard.sex,
+							createDate: vue.bookCard.createDate,
+							deposit: vue.bookCard.deposit
 						},
 						success(result) {
 							selectCity(vue);
-							this.addDialogFormVisible = false;
+							vue.addDialogFormVisible = false;
 						}
 					})
 				}

@@ -1,15 +1,9 @@
-package edu.nf.bookCard.vo;
+package edu.nf.card.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * 响应对象
- *
- * @author 安然的尾巴
- * @version 1.0
- */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

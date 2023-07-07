@@ -1,4 +1,4 @@
-package edu.nf.bookCard.utils;
+package edu.nf.card.utils;
 
 import org.nf.db.util.SqlExecutor;
 import org.nf.db.util.result.BeanHandler;
@@ -9,10 +9,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 
-/**
- * @author 安然的尾巴
- * @version 1.0
- */
 public class MySqlUtil {
     static {
         /*
@@ -26,7 +22,7 @@ public class MySqlUtil {
         }
     }
 
-    private static final String URL = "jdbc:mysql://mysql.lldwb.top:33366/bookcard?serverTimezone=Asia/Shanghai&useSSL=false";
+    private static final String URL = "jdbc:mysql://mysql.lldwb.top:33366/CardDB?serverTimezone=Asia/Shanghai&useSSL=false";
     //账号
     private static final String USER_NAME = "root";
     //密码
